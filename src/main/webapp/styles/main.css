@@ -1,0 +1,253 @@
+@CHARSET "UTF-8";
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body{color:#000000;background-color:#ffc21c; margin:10;padding:5;font-size:120%;}
+
+/* Login page form styles */
+.form-ul li
+{
+    display:block;
+    list-style: none;
+}
+
+.form-ul label
+{
+	display:block;
+	font-weight:bold;
+}
+
+.form-ul input[type="email"], input[type="password"]
+{
+	width:75%;
+	margin: 5px 0px 5px 0px;
+}
+
+.form-ul input[type="submit"]
+{
+	margin:5px 0px 5px 0px;
+	font-weight:bold;
+	font-size:100%;
+}
+
+.webformdiv
+{
+	max-width:380px;
+	margin: 50px auto;
+	background-color:#ffff56;
+	padding:10px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #ffffff;
+	
+}
+
+.formheader
+{
+	margin: 10px;
+}
+
+/* Main body styles for each page */
+.mainbody
+{
+    max-width:80%;
+    margin: 30px auto;
+	background-color: #ffff56;
+    padding:5px;
+	border-radius:15px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #ffffff;
+}
+
+/* Heading for each page */
+.appheader
+{
+    max-width:30%;
+    margin: 0 auto;
+}
+
+
+/* Top navigation styles */
+.topnavdiv
+{
+	margin:0 10px 0 10px;
+	padding:0;
+	
+}
+
+.topmenu
+{
+	margin-top: 5px;
+	font-weight:bold; 
+}
+
+.topmenu a:link
+{
+	color:#f77300; 
+	text-decoration: none;
+}
+
+.topmenu a:visited
+{
+	color:#f77300;
+	text-decoration: none;
+}
+
+.topmenu a:hover
+{
+	color:#f77300;
+	background-color:white;
+	text-decoration:none;
+}
+
+/*Styles to show login user and mode for each page */
+.showuser
+{
+	font-size: 80%;
+	color: #0202db;
+}
+
+.showusermode
+{
+	font-weight:bold;
+}
+
+/* Main content of each page */
+.maincontent
+{   
+	max-width:100%;
+	margin:10px 5px 15px 5px;
+	padding:10px;
+	background-color: #ffffff;
+	border-radius:5px;
+	font-size:100%;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #ccc;
+}
+
+/*Style for footer */
+.bottom
+{
+	font-size:80%;
+	max-width:380px;
+    margin: 0 auto;
+    padding:5px;
+}
+
+
+/* Styles for form box to configure settings */
+.sformbox
+{   max-width:90%;
+    height:135px;
+	margin:0;
+	margin-top:5px;
+	padding:0;
+	background-color:#fff;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #ccc;
+	overflow:auto;
+}
+
+
+.sform-ul li
+{
+   display:block;
+   list-style:none;
+}
+
+.sform-ul input[type="text"]
+{
+	margin:5px;
+	width: 200px;
+	height:28px;
+	overflow:hidden;
+}
+
+.sform-ul label
+{
+	font-weight:bold;
+}
+
+.sform-ul button
+{
+	/* margin-top: 10px; */
+	margin: 10px 5px 5px 5px;
+	font-weight:bold;
+	font-size: 15px;
+	height:28px;
+	overflow: hidden;
+	
+}
+
+/* Styles for listing for setting values */
+.settinglist
+{
+	margin:20px 0 10px 0;
+	padding:0;
+	max-width:90%;
+	max-height:165px;
+	overflow:auto;
+	border-style: solid;
+    border-width: 1px;
+	border-color: #ccc;
+}
+
+.display-set
+{
+   margin: 15px;	
+   padding:5px;
+}	
+
+.display-set-label
+{
+	font-weight:bold;
+}
+
+/* Status message div */
+.settingmsg
+{
+   color:#ff3f42;
+   font-weight:bold;
+}
+
+
+/*
+Webpage url listing div in url.jsp
+*/
+.urlbox
+{   max-width:90%;
+    height:300px;
+	margin:5px 0 15px 0;
+	padding:0;
+	background-color:#fff;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #ccc;
+	overflow:auto;
+}
+
+/*
+Table used in domain.jsp page. 
+*/
+table.mtable
+{
+	border-collapse: collapse;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #ccc;
+}
+
+table.mtable td, th
+{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #ccc;
+	padding: 5px;
+	text-align: left;
+}

@@ -1,0 +1,51 @@
+<%@ page import="java.util.Date" %>
+<%@ page import="sg.nighthour.app.HtmlEscape" %>
+<%@ page import="sg.nighthour.app.UserDAO" %>
+<%@ page import="sg.nighthour.app.AntiCSRFToken" %>
+<%@ page import="sg.nighthour.app.AppConstants" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
+
+<%
+String user = (String) session.getAttribute("userid");
+user = HtmlEscape.escapeHTML(user);
+%>
+
+<%! 
+
+private String generateURL(String urlpath, String description, HttpSession session )
+        throws ServletException
+{
+    String csrftoken = AntiCSRFToken.setTokenPlain(session, urlpath);
+    StringBuilder buf = new StringBuilder(AppConstants.STD_BUF_SIZE);
+    buf.append("<a href=\"");
+    buf.append(urlpath);
+    buf.append("?csrf=");
+    buf.append(csrftoken);
+    buf.append("\">");
+    buf.append(description);
+    buf.append("</a>");
+    
+    return buf.toString();
+}
+
+%>
+
+<div class="topnavdiv">
+
+<div class="showuser">
+Welcome <%= user %> !  <%= new Date() %> <br>
+Mode: <span class="showusermode" id="showusermode"> 
+<%= UserDAO.getCurrentMode( (String) session.getAttribute("userid") ) %> 
+</span>
+</div>
+
+<nav class="topmenu">
+<%= generateURL("/home", "Home", session) %> |
+<%= generateURL("/domain", "Domain", session) %> |
+<%= generateURL("/mode", "Mode",session) %> |
+<%= generateURL("/url", "Monitored WebPages",session) %> |
+<%= generateURL("/action", "Action",session) %> |
+<a href="/logout">Log out</a> 
+</nav>
+
+</div>
