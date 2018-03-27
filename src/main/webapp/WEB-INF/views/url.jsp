@@ -25,7 +25,7 @@
 
 <h3>Monitored WebPages</h3>
 <p>
-The list of webpages/urls that are monitored. Each domain can have up to 200 monitored webpages/urls. 
+The list of webpages/urls that are monitored. Each domain can have up to 300 monitored webpages/urls. 
 </p>
 <div id="msg" class="settingmsg"></div>
 
@@ -75,4 +75,5 @@ The list of webpages/urls that are monitored. Each domain can have up to 200 mon
 
 </body>
 </html>
+
 
