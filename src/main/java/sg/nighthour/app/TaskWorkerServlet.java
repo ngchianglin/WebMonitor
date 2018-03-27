@@ -95,8 +95,16 @@ public class TaskWorkerServlet extends HttpServlet
         // Retrieve the Alert entity key
         String key = request.getParameter("key");
         // log.warning("Got : " + key);
-
+        if(key == null)
+        {
+            log.warning("Error: Alert key is null : " + request.getRemoteAddr());
+            response.setStatus(400);
+            return;
+        }
+        
+        
         long numerickey = Long.parseLong(key);
+        
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
@@ -217,3 +225,4 @@ public class TaskWorkerServlet extends HttpServlet
     }
 
 }
+
