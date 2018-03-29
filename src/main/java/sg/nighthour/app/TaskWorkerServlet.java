@@ -198,7 +198,7 @@ public class TaskWorkerServlet extends HttpServlet
                         + "Sha256 : " + sha256 + "\n\n\n" + content;
 
                 MimeMessage message = new MimeMessage(session);
-                message.setFrom(new InternetAddress("noreply.nighthour1@gmail.com"));
+                message.setFrom(new InternetAddress(AppConstants.fromemail));
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(userid));
                 message.setSubject("Alert message " + url);
                 message.setText(msg, "UTF-8");
