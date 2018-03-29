@@ -82,5 +82,9 @@ public class AppConstants
     public static final int MAX_ACTIONURL_LEN = 256;
     
     public static final int PBE_ITERATION = 10000;
+    
+    //The from email address for sending out email alerts
+    public static String fromemail = "noreply@nighthour.sg";
 
 }
+
