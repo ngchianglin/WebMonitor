@@ -328,7 +328,7 @@
       
       guardXMLHttpRequest();
      
-	  var endpoint = "https://nighthour-002-dot-abiding-bongo-179014.appspot.com/webrpt"
+	  var endpoint = "https://demo2-nighthour.appspot.com/webrpt";
 	  var xhttp = new XMLHttpRequest();
 	  
 	  var data = JSON.stringify({"WebRpt" : rpt });
