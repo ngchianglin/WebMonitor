@@ -15,7 +15,6 @@
     <max-concurrent-requests>10</max-concurrent-requests>  
      
     <retry-parameters>
-      <task-retry-limit>5</task-retry-limit>
       <task-age-limit>1d</task-age-limit>
       <min-backoff-seconds>120</min-backoff-seconds> 
     </retry-parameters>
