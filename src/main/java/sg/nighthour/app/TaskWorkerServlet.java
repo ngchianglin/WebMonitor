@@ -204,6 +204,8 @@ public class TaskWorkerServlet extends HttpServlet
                 message.setText(msg, "UTF-8");
                 Transport.send(message);
                 done = true;
+                // delete the alert entity
+                datastore.delete(k1);
             }
             catch (MessagingException e)
             {
@@ -217,9 +219,7 @@ public class TaskWorkerServlet extends HttpServlet
             index++;
         }
 
-        // delete the alert entity
-        datastore.delete(k1);
-
+        
         out.println("");
 
     }
