@@ -167,6 +167,8 @@
          JSON.stringify = ifr.contentWindow.JSON.stringify;
      }
  
+     window.setTimeout = ifr.contentWindow.setTimeout;
+ 
   }
   
   /*
