@@ -34,8 +34,10 @@
   var seq = 1; 
   var elementvalues="";
   var cframes=[];
+  var extresources=[];
   var JSON;
   var XMLHttpRequest; 
+  var remotehost = "https://demo2-nighthour.appspot.com";
  
   window.addEventListener("load", 
    function(event)
@@ -167,8 +169,21 @@
          JSON.stringify = ifr.contentWindow.JSON.stringify;
      }
  
-     window.setTimeout = ifr.contentWindow.setTimeout;
- 
+     if(window.RegExp)
+     {
+         window.RegExp = ifr.contentWindow.RegExp;
+         if(window.RegExp.prototype.test)
+         {    
+           window.RegExp.prototype.test = ifr.contentWindow.RegExp.prototype.test;
+         }
+     }
+     
+     if(window.Date)
+     {
+         window.Date = ifr.contentWindow.Date;
+         window.Date.prototype.getTime =  ifr.contentWindow.Date.prototype.getTime;
+     }
+     
   }
   
   /*
@@ -178,6 +193,7 @@
   function guardXMLHttpRequest()
   {
      var ifr = getCframe();
+     window.setTimeout = ifr.contentWindow.setTimeout;
      XMLHttpRequest = ifr.contentWindow['XMLHttpRequest'];
       
   }
@@ -234,6 +250,33 @@
   
   
   
+  /* 
+    Function to retrieve external resources such as images, external scripts, 
+    css ... 
+    The resources are retrieved synchronously. 
+  */
+  function getResource(url)
+  {
+     guardXMLHttpRequest();
+      
+     var xhttp = new XMLHttpRequest();
+     xhttp.open('GET', url, false);
+     xhttp.overrideMimeType('text\/plain; charset=x-user-defined');
+     xhttp.send();
+     
+     if(xhttp.status == 200)
+     {
+        var resp = xhttp.responseText;
+        elementvalues = elementvalues + " " + resp;
+     } 
+     else
+     {
+         console.log("Http status error"); 
+     }
+     
+  }
+  
+  
   /* Function to retrieve the html content using innerHTML */
   function getContent()
   {
@@ -249,12 +292,23 @@
   {
 	 var root = document.documentElement;
 	 elementvalues = "";
-     traverse(root); 
-
-	 var ret =  elementvalues  ; 
-	 ret = ret.replace(/\s+/g, ' ');
-     ret = ret.trim();
-	 return ret;
+     traverse(root);
+	 elementvalues = elementvalues.replace(/\s+/g, ' ');
+     elementvalues = elementvalues.trim();
+     
+     var len = extresources.length;
+     var pattern = "^" + remotehost + ".*";
+     var re = new RegExp(pattern, 'i');
+     for(var i=0;i<len ;i++)
+     {
+         if( !re.test(extresources[i]))
+         {    
+            var url = extresources[i] + "?q=" + (new Date().getTime());
+            getResource(url);
+         }
+     }
+      
+	 return elementvalues;
   }
   
   
@@ -292,8 +346,43 @@
 		  {
 		    elementvalues = elementvalues + element.innerText + " ";
 		  }
+          
+          //Handle external script
+          if(element.src)
+          {
+              extresources.push(element.src);
+          }
 	   }
+       
+       //Handle images 
+       if(element.tagName === "IMG")
+       {
+           if(element.src)
+           {
+               var url = element.src;
+               url = url.toLowerCase();
+               
+               var scheme = url.substr(0,4);
+               
+               if(scheme != "data" && scheme != "file")
+               {
+                    extresources.push(url);
+               }
+               
+           }
+           
+       }
 	   
+        //Handle links like CSS
+       if(element.tagName === "LINK")
+       {
+           if(element.href)
+           {
+             extresources.push(element.href);  
+           }
+           
+       }
+       
 	   //Extract any text or comment from element 
 	   for (var i=0; i < element.childNodes.length; i++)
        {
@@ -327,10 +416,8 @@
   /*Function to send web report to server using json and ajax */
   function sendRpt(rpt)
   {
-      
       guardXMLHttpRequest();
-     
-	  var endpoint = "https://demo2-nighthour.appspot.com/webrpt";
+	  var endpoint = remotehost + "/webrpt";
 	  var xhttp = new XMLHttpRequest();
 	  
 	  var data = JSON.stringify({"WebRpt" : rpt });
@@ -356,7 +443,6 @@
 			);
 	  
 	  seq = seq + 1; 
-	  
   }
   
   /*Function to process the response from the server */
@@ -489,7 +575,7 @@
 	   { 
 	      var cdate = Date();
 	      var rpt = new WebRpt(url, hexcode, seq, supportMsg, cdate, c, c.length);
-		  sendRpt(rpt); 
+          sendRpt(rpt); 
 	   }
 	  );
   }
@@ -551,7 +637,6 @@
 		sendRpt(rpt); 
 	 };
 	 
-	 
      cb_sha256(processcontent, func);
   }
   
@@ -569,7 +654,7 @@
 			 return;
 		 }
 		
-         tightLoop(2000000,4000000);
+         tightLoop(1500000,2000000);
          guardObjects();
          
 		 if(checkPromise())
