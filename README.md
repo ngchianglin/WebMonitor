@@ -1,15 +1,20 @@
 # Simple Monitoring for Web Changes Using Client-Side JavaScript
 
 ## Introduction
-A simple application that monitors for unauthorized web changes (eg. web defacements etc...) using client-side javascript 
+A simple application that monitors for unauthorized web changes (e.g. web defacements etc...) using client-side javascript 
 and a Java application running on Google App Engine. 
 
 The application works like performance and analytics software where a piece of javascript is inserted or embedded into the web pages/web
-content being monitored. The javascript traverses the web document and calculate a sha256 hash that is sent to the App Engine application.
-If the hash is different from what is registered in the application datastore, an email alert will be sent. Optionally the application 
-can be configured to instruct the javascript to redirect the browser to a specific error page.
+content being monitored. The javascript traverses the web document and calculate a sha256 hash of the document content.
+External resources in the web document such as images, external javascript, css files are included in the hash calculation. 
+If an image displayed in the document (e.g. using &lt;img&gt; tag) has been vandalized, the monitoring application will be able to detect this. 
 
-The application can be used as an additional security measure to protect static web content. 
+The client-side javascript sends the sha256 hash to the backend application running on Google App Engine. 
+If the hash is different from what is stored in the application datastore, an email alert will be sent to the website administrator. Optionally the application can be configured to instruct the javascript to redirect the visitor browser to a specific error page.
+
+The redirection is a useful feature that can reduce the exposure time of a web defacement. While this is less effective than an in-line appliance which can block defaced content, it is an advantage over pure remote monitoring app which polls website for changes. 
+
+This simple monitoring application is a "hybrid" between an in-line solution and a remote monitoring solution. It can be used as an additional security measure to protect static web content. For example, it can be used together with a remote monitoring app. 
 
 ## Building and Deployment
 
