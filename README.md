@@ -50,4 +50,30 @@ Gpg Signed commits are used for committing the source files.
 > A userful link on how to verify gpg signature [https://github.com/blog/2144-gpg-signature-verification](https://github.com/blog/2144-gpg-signature-verification)
 
 
+# 中文简介 - 使用客户端 JavaScript 监控网络变化
+
+## 介绍
+
+这是个网络监控，网络保安软件。 它使用客户端的 JavaScript 与在谷歌应用引擎 （Google App Engine）运行的 JSP/Servlet 应用软件，来监控网页。 一旦网页有未经授权的更改，软件就会发出提醒邮件。 客户端的 JavaScript 也能重定向到特定的错误页面。 这可以防止网页涂改， 加强网络安全。 
+
+
+这软件类似于分析和性能监视 （analytics and performance monitoring) 软件。 
+客户端 JavaScript 遍历 html DOM 文档，运用 SHA256 把内容散列。 在 html 文档的外部图像例如 html img tag 的图像，外部 javascript，
+CSS文件等， 也包括在 SHA256 哈希内. JavaScript 利用 AJAX 将 SHA256 哈希发送到运行在谷歌应用引擎 （Google App Engine）的 JSP/Servlet 程序。
+如果 传递的 SHA256 哈希与保存在数据库中的哈希不同，程序会发出电子邮件警报。程序也能使唤客户端 JavaScript 把客户端浏览器重定向到特定的错误页面。
+
+## 软件解说与如何使用
+
+可以参考下面的详细文章
+
+[Monitoring Web Changes using Javascript and Google App Engine](https://www.nighthour.sg/articles/2018/monitor-webchange-javascript-google-appengine.html)
+
+
+## 代码数字签名
+
+> 这软件代码有数字签名。可以参考 
+[https://www.nighthour.sg/git-gpg.html](https://www.nighthour.sg/git-gpg.html) 
+
+> Github GPG签名验证 [https://github.com/blog/2144-gpg-signature-verification](https://github.com/blog/2144-gpg-signature-verification)
+
 
