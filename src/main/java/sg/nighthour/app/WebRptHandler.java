@@ -445,6 +445,12 @@ public class WebRptHandler extends GenericFunctionHandler
         {// monitor mode
              
              String checksum = WebRptDAO.getURLChecksum(userid, domain, wreport.getURL());
+  
+             String useragent = request.getHeader("User-Agent");
+             if(useragent == null)
+             {
+                 useragent = "unknown"; 
+             }
              
              if(checksum == null)
              {//url not found or error getting checksum behave as if monitoring is disabled
@@ -454,12 +460,12 @@ public class WebRptHandler extends GenericFunctionHandler
              }
              
              if(checksum.equals(wreport.getCheckSum()))
-             {//checksum matches
+             {//sha256 hash matches
                  out.println("Ok");
                  return;
              }
              else if( WebRptDAO.isRedirectionEnabled(userid))
-             {// checksum does not match alert and redirect to error page
+             {// sha256 hash does not match alert and redirect to error page
                  
                  String redirecturl = WebRptDAO.getRedirectionURL(userid);
                  
@@ -473,15 +479,17 @@ public class WebRptHandler extends GenericFunctionHandler
                              " : " + wreport.getURL() + " : " + request.getRemoteAddr());
                  }
                  
-                 String alertkey = WebRptDAO.createAlert(wreport, userid, request.getRemoteAddr());
+             
+                 
+                 String alertkey = WebRptDAO.createAlert(wreport, userid, request.getRemoteAddr(),useragent);
                  Queue queue = QueueFactory.getQueue("alert-queue");
                  queue.add(TaskOptions.Builder.withUrl("/worker").param("key", alertkey));
                  
                  return; 
              }
              else 
-             {//checksum does not match redirection is not enabled
-                 String alertkey = WebRptDAO.createAlert(wreport, userid, request.getRemoteAddr());
+             {//sha256 hash does not match redirection is not enabled
+                 String alertkey = WebRptDAO.createAlert(wreport, userid, request.getRemoteAddr(),useragent);
                  Queue queue = QueueFactory.getQueue("alert-queue");
                  queue.add(TaskOptions.Builder.withUrl("/worker").param("key", alertkey));
                  return; 
@@ -503,3 +511,4 @@ public class WebRptHandler extends GenericFunctionHandler
     }
 
 }
+

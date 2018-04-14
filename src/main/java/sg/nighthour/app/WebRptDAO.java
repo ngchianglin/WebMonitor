@@ -406,15 +406,16 @@ public class WebRptDAO
      *            WebReport
      * @param userid
      * @param remoteip
+     * @param useragent
      * @return the alert entity key
      * @throws ServletException
      */
-    public static String createAlert(WebReport rpt, String userid, String remoteip) throws ServletException
+    public static String createAlert(WebReport rpt, String userid, String remoteip, String useragent) throws ServletException
     {
 
-        if (rpt == null || userid == null || remoteip == null)
+        if (rpt == null || userid == null || remoteip == null || useragent == null)
         {
-            log.warning("Error: WebReport object, userid or remoteip is null");
+            log.warning("Error: WebReport object, userid, remoteip or useragent is null");
             throw new ServletException("Invalid null arguments !");
         }
 
@@ -429,10 +430,11 @@ public class WebRptDAO
 
         Entity alert = new Entity(AppConstants.ALERT_KIND);
         alert.setUnindexedProperty("content", new Text(rpt.getContent()));
-        alert.setProperty("senderip", remoteip);
+        alert.setUnindexedProperty("senderip", remoteip);
         alert.setUnindexedProperty("sha256", rpt.getCheckSum());
-        alert.setProperty("userid", userid);
-        alert.setProperty("url", rpt.getURL());
+        alert.setUnindexedProperty("userid", userid);
+        alert.setUnindexedProperty("useragent", useragent);
+        alert.setUnindexedProperty("url", rpt.getURL());
 
         datastore.put(alert);
         Key alertkey = alert.getKey();
@@ -441,3 +443,4 @@ public class WebRptDAO
     }
 
 }
+

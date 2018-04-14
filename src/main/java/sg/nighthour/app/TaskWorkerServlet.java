@@ -115,6 +115,7 @@ public class TaskWorkerServlet extends HttpServlet
         String senderip = null;
         String sha256 = null;
         String url = null;
+        String useragent = null; 
 
         try
         { // Retrieve the alert entity
@@ -124,6 +125,7 @@ public class TaskWorkerServlet extends HttpServlet
             senderip = (String) alert.getProperty("senderip");
             sha256 = (String) alert.getProperty("sha256");
             url = (String) alert.getProperty("url");
+            useragent = (String)alert.getProperty("useragent"); 
         }
         catch (EntityNotFoundException e)
         {
@@ -194,8 +196,12 @@ public class TaskWorkerServlet extends HttpServlet
                 props.put("mail.smtp.host", smtphost);
                 props.put("mail.smtp.port", "25");
                 Session session = Session.getInstance(props);
-                String msg = "Web Content has changed \n" + url + "\n" + "Sender Address : " + senderip + "\n"
-                        + "Sha256 : " + sha256 + "\n\n\n" + content;
+                String msg = "Web Content has changed \n" + url + "\n" 
+                        + "Sender Address : " + senderip + "\n"
+                        + "Sha256 : " + sha256 + "\n" 
+                        + "User Agent: " + useragent + "\n"
+                        + "Note: Content doesn't include external resources such as images, css, javascript files." 
+                        + "\n\n" + content;
 
                 MimeMessage message = new MimeMessage(session);
                 message.setFrom(new InternetAddress(AppConstants.fromemail));
