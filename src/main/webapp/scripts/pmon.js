@@ -287,7 +287,7 @@
         {
             if (!re.test(extresources[i]))
             {
-                var url = extresources[i] + "?q=" + (new Date().getTime());
+                var url = extresources[i] + "?" + (new Date().getTime());
                 getResource(url);
             }
         }
