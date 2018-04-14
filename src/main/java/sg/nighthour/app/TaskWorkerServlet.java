@@ -200,7 +200,7 @@ public class TaskWorkerServlet extends HttpServlet
                         + "Sender Address : " + senderip + "\n"
                         + "Sha256 : " + sha256 + "\n" 
                         + "User Agent: " + useragent + "\n"
-                        + "Note: Content doesn't include external resources such as images, css, javascript files." 
+                        + "Note: The content below doesn't include external resources such as images, css, javascript files." 
                         + "\n\n" + content;
 
                 MimeMessage message = new MimeMessage(session);
