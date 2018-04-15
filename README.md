@@ -40,7 +40,7 @@ model for the monitoring mechanism.
 
 Refer to the link below for a detailed article on the setup.
 
-[Monitoring Web Changes using Javascript and Google App Engine](https://www.nighthour.sg/articles/2018/monitor-webchange-javascript-google-appengine.html)
+[Detecting Web Defacements using Javascript and Google App Engine](https://www.nighthour.sg/articles/2018/monitor-webchange-javascript-google-appengine.html)
 
 ## Source signature
 Gpg Signed commits are used for committing the source files. 
@@ -66,7 +66,7 @@ CSS文件等， 也包括在 SHA256 哈希内. JavaScript 利用 AJAX 将 SHA256
 
 可以参考下面的详细文章
 
-[Monitoring Web Changes using Javascript and Google App Engine](https://www.nighthour.sg/articles/2018/monitor-webchange-javascript-google-appengine.html)
+[Detecting Web Defacements using Javascript and Google App Engine](https://www.nighthour.sg/articles/2018/monitor-webchange-javascript-google-appengine.html)
 
 
 ## 代码数字签名
