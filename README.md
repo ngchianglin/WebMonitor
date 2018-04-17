@@ -1,4 +1,4 @@
-# Simple Monitoring for Web Changes Using Client-Side JavaScript
+# Simple Monitoring for Web Defacements Using Client-Side JavaScript
 
 ## Introduction
 A simple application that monitors for unauthorized web changes (e.g. web defacements etc...) using client-side javascript 
@@ -19,7 +19,7 @@ This simple monitoring application is a "hybrid" between an in-line solution and
 ## Building and Deployment
 
 The application is a maven project that can be imported into Eclipse IDE. It can be built and deployed to Google App Engine using 
-the Eclipse IDE (Google cloud tools for Eclipse installed). 
+the Eclipse IDE (Google cloud tools for Eclipse installed) or maven with the app engine plugin configured. 
 
 The monitoring javascript is present in the scripts directory and can be accessed via 
 
@@ -40,7 +40,7 @@ model for the monitoring mechanism.
 
 Refer to the link below for a detailed article on the setup.
 
-[Detecting Web Defacements using Javascript and Google App Engine](https://www.nighthour.sg/articles/2018/monitor-webchange-javascript-google-appengine.html)
+[Detecting Web Defacements using Javascript and Google App Engine](https://www.nighthour.sg/articles/2018/detect-web-defacement-javascript-google-appengine.html)
 
 ## Source signature
 Gpg Signed commits are used for committing the source files. 
@@ -66,7 +66,7 @@ CSS文件等， 也包括在 SHA256 哈希内. JavaScript 利用 AJAX 将 SHA256
 
 可以参考下面的详细文章
 
-[Detecting Web Defacements using Javascript and Google App Engine](https://www.nighthour.sg/articles/2018/monitor-webchange-javascript-google-appengine.html)
+[Detecting Web Defacements using Javascript and Google App Engine](https://www.nighthour.sg/articles/2018/detect-web-defacement-javascript-google-appengine.html)
 
 
 ## 代码数字签名
@@ -75,5 +75,6 @@ CSS文件等， 也包括在 SHA256 哈希内. JavaScript 利用 AJAX 将 SHA256
 [https://www.nighthour.sg/git-gpg.html](https://www.nighthour.sg/git-gpg.html) 
 
 > Github GPG签名验证 [https://github.com/blog/2144-gpg-signature-verification](https://github.com/blog/2144-gpg-signature-verification)
+
 
 
