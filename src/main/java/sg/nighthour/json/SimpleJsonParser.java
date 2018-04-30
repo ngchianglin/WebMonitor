@@ -36,10 +36,8 @@
  * 
  * SimpleJsonParser has been tested using the test json files that are available from 
  * http://www.json.org/JSON_checker/ 
- * 
- * Take note that fail18.json which tests depth of nesting [[[]]] will parse successfully
- * using SimpleJsonParser. SimpleJsonParser currently doesn't have a default depth setting. 
  *  
+ * The default depth setting for nesting of arrays and objects is 20 
  * A maximum input String size setting can be specified for SimpleJsonParser to reject input that exceed certain size. 
  * 
  * A Findbugs check has also been ran against SimpleJsonParser and so far no serious bugs detected for the parser package. 
@@ -64,10 +62,9 @@ public class SimpleJsonParser
 
     private SimpleJsonTokenizer tokenizer;
     private String input;
-    private static final int MAXINPUTSIZE = sg.nighthour.app.AppConstants.MAX_JSON_PARSER_INPUT_SIZE;
-    // private int parseArrayCnt=0;
-    // private int parseArrayLeftBracket = 0;
-
+    private static final int MAXINPUTSIZE = sg.nighthour.app.AppConstants.MAX_JSON_PARSER_INPUT_SIZE; 
+    private static final int MAXDEPTH = 20;
+   
     /**
      * Initialize a SimpleJsonParser object
      * 
@@ -104,10 +101,12 @@ public class SimpleJsonParser
 
         String str = tokenizer.peekNext();
         // tokenizer.printTokens();
+        
+        int depth = 1; 
 
         if (str.equals("{"))
         { // Json Object
-            val = new SimpleJsonValue(parseObject());
+            val = new SimpleJsonValue(parseObject(depth));
             if (tokenizer.hasNext())
             {// Trailing data is present eg {"name1":"value1"}]:}]]]]
                 throw new SimpleParseException("Parse error invalid json object trailing data");
@@ -115,7 +114,7 @@ public class SimpleJsonParser
         }
         else if (str.equals("["))
         { // Json Array
-            val = new SimpleJsonValue(parseArray());
+            val = new SimpleJsonValue(parseArray(depth));
             if (tokenizer.hasNext())
             {// Trailing data is present eg [123,abc]]]]]
                 throw new SimpleParseException("Parse error invalid json array trailing data");
@@ -132,11 +131,19 @@ public class SimpleJsonParser
     /**
      * Parses json tokens input into a json array
      * 
+     * @param depth
+     *        the current depth of json nesting
      * @return Json value containing a json array
      * @throws SimpleParseException
      */
-    private SimpleJsonArray parseArray() throws SimpleParseException
+    private SimpleJsonArray parseArray(int depth) throws SimpleParseException
     {
+        
+        if(depth == MAXDEPTH)
+        {
+            throw new SimpleParseException("Parse json array exception - maximum depth exceeded");
+        }
+        
         SimpleJsonArray arr = new SimpleJsonArray();
 
         boolean done = false;
@@ -154,7 +161,7 @@ public class SimpleJsonParser
             if (token.equals("["))
             {
                 tokenizer.nextToken(); // consume [
-                SimpleJsonValue val = getValue();
+                SimpleJsonValue val = getValue(depth);
                 if (val != null)
                 {// cater for the case of empty array []
                     arr.addValue(val);
@@ -164,7 +171,7 @@ public class SimpleJsonParser
             else if (token.equals(","))
             {
                 tokenizer.nextToken(); // consume ,
-                arr.addValue(getValue());
+                arr.addValue(getValue(depth));
             }
             else if ("]".equals(token))
             {
@@ -184,14 +191,24 @@ public class SimpleJsonParser
 
     /**
      * Retrieves a json value from the json tokens input
+     *
+     * @param depth 
+     *        the current depth of json nesting
      * 
      * @return a json value that can be a json string, number, object, array,
      *         true, false or json null value. Method will return a java null
      *         object if there is no json value, eg. []
      * @throws SimpleParseException
      */
-    private SimpleJsonValue getValue() throws SimpleParseException
+    private SimpleJsonValue getValue(int depth) throws SimpleParseException
     {
+        
+        if(depth == MAXDEPTH)
+        {
+            throw new SimpleParseException("Parse json getValue exception - maximum depth exceeded");
+        }
+        
+        
         SimpleJsonValue ret = new SimpleJsonValue();
 
         String token = tokenizer.peekNext();
@@ -214,12 +231,12 @@ public class SimpleJsonParser
         else if (token.startsWith("{"))
         {// Json Object
             ret.setType(JsonType.OBJECT);
-            ret.setJsonObject(parseObject()); // parseObject will consume the {
+            ret.setJsonObject(parseObject(depth + 1)); // parseObject will consume the {
         }
         else if (token.startsWith("["))
         {// Json Array
             ret.setType(JsonType.ARRAY);
-            ret.setJsonArray(parseArray());// parseArray will consume the [
+            ret.setJsonArray(parseArray(depth + 1));// parseArray will consume the [
         }
         else if ("true".equals(token) || "false".equals(token))
         {// Json boolean
@@ -248,11 +265,20 @@ public class SimpleJsonParser
     /**
      * Parses the json tokens input into a json object
      * 
+     * @param depth
+     *        the current depth of json nesting
+     *
      * @return json object
      * @throws SimpleParseException
      */
-    private SimpleJsonObject parseObject() throws SimpleParseException
+    private SimpleJsonObject parseObject(int depth) throws SimpleParseException
     {
+        
+        if(depth == MAXDEPTH)
+        {
+            throw new SimpleParseException("Parse json object exception - maximum depth exceeded");
+        }
+        
         SimpleJsonObject jsObj = new SimpleJsonObject();
 
         boolean done = false;
@@ -269,7 +295,7 @@ public class SimpleJsonParser
             if ("{".equals(token))
             {
                 tokenizer.nextToken(); // consume the {
-                SimpleJsonNamePair np = parseNamePair();
+                SimpleJsonNamePair np = parseNamePair(depth);
                 if (np != null)
                 {// cater for the case of empty json object {}
                     jsObj.setNameValue(np.getName(), np.getValue());
@@ -283,9 +309,9 @@ public class SimpleJsonParser
             else if (",".equals(token))
             {
                 tokenizer.nextToken(); // consume the ,
-                SimpleJsonNamePair np = parseNamePair();
+                SimpleJsonNamePair np = parseNamePair(depth);
                 if (np == null)
-                { // To ensure that the namepair is null
+                { // To ensure that the namepair is not null
                     throw new SimpleParseException("Parse json object exception");
                 }
 
@@ -304,11 +330,20 @@ public class SimpleJsonParser
     /**
      * Parses the json tokens input into a json name value pair
      * 
+     * @param depth
+     *        the current depth of json nesting
+     *
      * @return Json name value pair or null if empty object with no namepair {}
      * @throws SimpleParseException
      */
-    private SimpleJsonNamePair parseNamePair() throws SimpleParseException
+    private SimpleJsonNamePair parseNamePair(int depth) throws SimpleParseException
     {
+        
+        if(depth == MAXDEPTH)
+        {
+            throw new SimpleParseException("Parse json name pair exception - maximum depth exceeded");
+        }
+        
         SimpleJsonNamePair namepair = new SimpleJsonNamePair();
 
         boolean done = false;
@@ -334,7 +369,7 @@ public class SimpleJsonParser
                     throw new SimpleParseException("Parse json name pair exception");
                 }
                 tokenizer.nextToken(); // consume the :
-                namepair.setValue(getValue());
+                namepair.setValue(getValue(depth));
                 done = true;
             }
             else if ("}".equals(token) && "{".equals(tokenizer.prevToken()))
@@ -424,3 +459,4 @@ public class SimpleJsonParser
     }
 
 }
+
